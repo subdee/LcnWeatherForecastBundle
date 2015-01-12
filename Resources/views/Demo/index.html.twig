@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>LcnWeatherForecastBundle Demo and Documentation</title>
+</head>
+<body>
+
+<h1>Demo usage of LcnWeatherForecastBundle</h1>
+
+
+<h2>Weather today in Hamburg, Germany</h2>
+<dl>
+    <dt>Summary</dt>
+    <dd>{{ forecastForToday.summary }}</dd>
+    <dt>Icon</dt>
+    <dd>{{ forecastForToday.icon }}</dd>
+</dl>
+
+<h2>Current weather in Hamburg, Germany</h2>
+<dl>
+    <dt>Summary</dt>
+    <dd>{{ forecastForCurrentHour.summary }}</dd>
+    <dt>Icon</dt>
+    <dd>{{ forecastForCurrentHour.icon }}</dd>
+</dl>
+
+<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+</body>
+</html>
+

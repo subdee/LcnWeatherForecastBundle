@@ -1,0 +1,13 @@
+parameters:
+  lcn.weather_forecast.class: Lcn\WeatherForecastBundle\Service\Forecast
+  lcn.weather_forecast_provider.forecast_io.class: Lcn\WeatherForecastBundle\Provider\ForecastIoProvider
+  lcn.weather_forecast_provider.forecast_io.api_token: "define your token as parameter 'lcn.weather_forecast_provider.forecast_io.api_token' in 'app/config/parameters.yml'"
+
+services:
+    lcn.weather_forecast:
+        class: %lcn.weather_forecast.class%
+        arguments: [@lcn.weather_forecast_provider.forecast_io]
+
+    lcn.weather_forecast_provider.forecast_io:
+        class: %lcn.weather_forecast_provider.forecast_io.class%
+        arguments: [%lcn.weather_forecast_provider.forecast_io.api_token%]

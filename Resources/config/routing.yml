@@ -1,0 +1,3 @@
+lcn_template_block_demo:
+    path:     /lcn-weather-forecast/demo
+    defaults: { _controller: LcnWeatherForecastBundle:Demo:index }
