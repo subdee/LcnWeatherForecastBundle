@@ -1,0 +1,30 @@
+{
+  "name" : "locaine/lcn-weather-forecast-bundle",
+  "description" : "Integrate Weather Forecasts by Forecast.io into your Symfony 2 projects. With API request normalization and caching.",
+  "type" : "symfony-bundle",
+  "authors" : [{
+    "name" : "Jonas Fischer-Maeck",
+    "email" : "info@jonasfischer.net"
+  }],
+  "keywords" : [
+    "Symfony 2, Forecast.io"
+  ],
+  "license" : [
+    "MIT"
+  ],
+  "require" : {
+  },
+  "autoload" : {
+    "psr-0" : {
+      "Lcn\\WeatherForecastBundle" : ""
+    }
+  },
+  "target-dir" : "Lcn/WeatherForecastBundle",
+  "repositories" : [{
+  }],
+  "extra" : {
+    "branch-alias" : {
+      "dev-master" : "1.0.0-dev"
+    }
+  }
+}

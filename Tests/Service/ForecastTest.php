@@ -2,11 +2,15 @@
 
 namespace Lcn\WeatherForecastBundle\Tests\Controller;
 
+use Doctrine\Common\Cache\Cache;
+use Doctrine\Common\Cache\PhpFileCache;
 use Lcn\WeatherForecastBundle\Model\Day;
 use Lcn\WeatherForecastBundle\Model\WeatherForecastForDay;
 use Lcn\WeatherForecastBundle\Model\WeatherForecastForHour;
 use Lcn\WeatherForecastBundle\Service\Forecast;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
+$lcnForecastProviderCallCount = 0;
 
 class ForecastTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,6 +27,16 @@ class ForecastTest extends \PHPUnit_Framework_TestCase
      */
     private $forecast;
 
+    /**
+     * @var Cache
+     */
+    private static $cache;
+
+    public static function setUpBeforeClass() {
+      self::$cache = new PhpFileCache(sys_get_temp_dir().'/lcn_weather_forecast');
+      self::$cache->deleteAll();
+    }
+
     public function setUp() {
 
         $forecastProvider = $this->getMockBuilder('\Lcn\WeatherForecastBundle\Provider\ForecastIoProvider')
@@ -30,11 +44,20 @@ class ForecastTest extends \PHPUnit_Framework_TestCase
           ->getMock();
 
         $todayTimestamp = $this->timestamp2;
+        $testName = $this->getName();
 
-        $forecastProvider->expects($this->any())->method('getForDay')->will($this->returnCallback(function($lat, $lng, $timestamp) use ($todayTimestamp) {
+        $forecastProvider->expects($this->any())->method('getForDay')->will($this->returnCallback(function($lat, $lng, $timestamp) use ($todayTimestamp, $testName) {
+
+            global $lcnForecastProviderCallCount;
+
+            $lcnForecastProviderCallCount++;
+
             if ($timestamp == strtotime('today')) {
                 $timestamp = $todayTimestamp;
             }
+
+            echo $timestamp;
+
             $filename = __DIR__ . '/../fixtures/' . intval($timestamp) . '.json';
             if (file_exists($filename)) {
                 return json_decode(file_get_contents($filename), true);
@@ -44,7 +67,7 @@ class ForecastTest extends \PHPUnit_Framework_TestCase
             }
         }));
 
-        $this->forecast = new Forecast($forecastProvider);
+        $this->forecast = new Forecast($forecastProvider, self::$cache);
     }
 
     public function testInvalidTimestamps()
@@ -61,11 +84,6 @@ class ForecastTest extends \PHPUnit_Framework_TestCase
         }
         catch(\Exception $e) {}
 
-        try {
-            $this->forecast->getForDay($this->lat, $this->lng, 1);
-            $this->fail('Out of range timestamps should return null');
-        }
-        catch(\Exception $e) {}
     }
 
     public function testInvalidGeoCoordinates()
@@ -169,8 +187,8 @@ class ForecastTest extends \PHPUnit_Framework_TestCase
               'icon' => 'wind',
             ),
             14 => array(
-              'summary' => 'Breezy and Overcast',
-              'icon' => 'wind',
+              'summary' => 'Drizzle and Windy',
+              'icon' => 'rain',
             ),
             15 => array(
               'summary' => 'Drizzle and Windy',
@@ -193,7 +211,7 @@ class ForecastTest extends \PHPUnit_Framework_TestCase
               'icon' => 'rain',
             ),
             20 => array(
-              'summary' => 'Drizzle and Breezy',
+              'summary' => 'Light Rain and Breezy',
               'icon' => 'rain',
             ),
             21 => array(
@@ -228,6 +246,12 @@ class ForecastTest extends \PHPUnit_Framework_TestCase
         $this->assertForecastForHour($forecastForHour);
         $this->assertEquals('Clear', $forecastForHour->getSummary());
         $this->assertEquals('clear-day', $forecastForHour->getIcon());
+    }
+
+    public function testForecastProviderCaching() {
+      global $lcnForecastProviderCallCount;
+
+      $this->assertEquals(2, $lcnForecastProviderCallCount);
     }
 
     private function assertForecastForDay($forecastForDay) {

@@ -54,6 +54,25 @@ parameters:
     ...
     lcn.weather_forecast.forecacst_io_api_token: 9f636811b51dded9de7e7ca811d325f7
     ...
+
+Step 4: Adjust caching (optional)
+---------------------------------
+
+The default cache engine caches the api results in files within the %kernel.cache_dir% directory.
+You can, however, provide any Cache Provider implementing the [Doctrine Cache](https://github.com/doctrine/DoctrineCacheBundle) interface:
+
+In config.yml or services.yml:
+
+
+```yaml
+services:
+...
+    lcn.weather_forecast.cache:
+        class: Doctrine\Common\Cache\PhpFileCache
+        arguments: [%kernel.cache_dir%]
+        calls:
+            - [setNamespace, ['lcn_weather_forecast']]
+...
 ```
 
 

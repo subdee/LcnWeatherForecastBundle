@@ -6,7 +6,13 @@ parameters:
 services:
     lcn.weather_forecast:
         class: %lcn.weather_forecast.class%
-        arguments: [@lcn.weather_forecast_provider.forecast_io]
+        arguments: [@lcn.weather_forecast_provider.forecast_io, @lcn.weather_forecast.cache]
+
+    lcn.weather_forecast.cache:
+        class: Doctrine\Common\Cache\PhpFileCache
+        arguments: [%kernel.cache_dir%]
+        calls:
+            - [setNamespace, ['lcn_weather_forecast']]
 
     lcn.weather_forecast_provider.forecast_io:
         class: %lcn.weather_forecast_provider.forecast_io.class%

@@ -1,6 +1,7 @@
 <?php
 namespace Lcn\WeatherForecastBundle\Service;
 
+use Doctrine\Common\Cache\Cache;
 use Lcn\WeatherForecastBundle\Model\Location;
 use Lcn\WeatherForecastBundle\Model\WeatherForecastForDay;
 use Lcn\WeatherForecastBundle\Model\WeatherForecastForHour;
@@ -15,13 +16,19 @@ class Forecast
   private $provider;
 
   /**
+   * @var Cache
+   */
+  private $cache;
+
+  /**
    * Class constructor
    *
    * @param String $apiToken
    */
-  public function __construct(ForecastProviderInterface $provider)
+  public function __construct(ForecastProviderInterface $provider, Cache $cache)
   {
     $this->provider = $provider;
+    $this->cache = $cache;
   }
 
   /**
@@ -53,14 +60,19 @@ class Forecast
 
     $timestamp = strtotime('midnight', $timestamp);
 
-    try {
-      $apiData = $this->provider->getForDay($latitude, $longitude, $timestamp);
+    $cacheKey = md5($latitude.$longitude.$timestamp);
 
-      return new WeatherForecastForDay($apiData);
+    if (false === ($apiData = $this->cache->fetch($cacheKey))) {
+      try {
+        $apiData = $this->provider->getForDay($latitude, $longitude, $timestamp);
+        $this->cache->save($cacheKey, $apiData, 3600*6); //TTL 6h
+      }
+      catch (\Exception $e) {
+        return null;
+      }
     }
-    catch (\Exception $e) {
-      return null;
-    }
+
+    return new WeatherForecastForDay($apiData);
   }
 
   /**
