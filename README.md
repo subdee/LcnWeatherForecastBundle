@@ -87,11 +87,26 @@ $lat = 53.553521;
 $lng = 9.948773;
 
 
-$forecast->getForToday($lat, $lng);
-$forecast->getForDay($lat, $lng, strtotime('tomorrow'));
+$forecastForDay = $forecast->getForToday($lat, $lng);
+// OR:
+$forecastForDay = $forecast->getForDay($lat, $lng, strtotime('tomorrow'));
 
-$forecast->getForCurrentHour($lat, $lng);
-$forecast->getForHour($lat, $lng, strtotime('+ 3 hours'));
+echo $forecastForDay->getSummary();
+echo $forecastForDay->getIcon();
+foreach ($forecastForDay->getHours() as $hour => $forecastForHour) {
+    echo $forecastForHour->getSummary();
+    echo $forecastForHour->getIcon();
+    $key = 'temperature'; // $key can be any key from forecast.io api, e.g. time, summary, icon, precipIntensity, precipIntensity, precipProbability, temperature, apparentTemperature, dewPoint, humidity, windSpeed, windBearing, visibility, cloudCover, pressure, ozone
+    echo $forecastForHour->get($key, 'fallback default value');
+}
 
+$forecastForHour = $forecast->getForCurrentHour($lat, $lng);
+// OR:
+$forecastForHour = $forecast->getForHour($lat, $lng, strtotime('+ 1 day 3 hours'));
+
+echo $forecastForHour->getSummary();
+echo $forecastForHour->getIcon();
+$key = 'temperature'; // $key can be any key from forecast.io api, e.g. time, summary, icon, precipIntensity, precipIntensity, precipProbability, temperature, apparentTemperature, dewPoint, humidity, windSpeed, windBearing, visibility, cloudCover, pressure, ozone
+echo $forecastForHour->get($key, 'fallback default value');
 
 ```

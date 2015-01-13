@@ -35,6 +35,10 @@ class WeatherForecastForDay extends BaseWeatherForecast {
     return $hourly['icon'];
   }
 
+  public function getHours() {
+    return $this->hours;
+  }
+
   public function getHour($hour) {
     if (!is_numeric($hour) || intval($hour) < 0 || intval($hour) > 23) {
       throw new \Exception('Hour must be a number between 0 and 23, '.$hour.' given');
