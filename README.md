@@ -52,7 +52,7 @@ Paste your free [Forecast.io API token](https://developer.forecast.io/) in app/c
 ```yaml
 parameters:
     ...
-    lcn.weather_forecast.forecacst_io_api_token: 9f636811b51dded9de7e7ca811d325f7
+    lcn.weather_forecast_provider.forecast_io.api_token: YOUR_TOKEN
     ...
 
 ### Step 4: Adjust caching (optional)
