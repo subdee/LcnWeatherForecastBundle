@@ -58,7 +58,10 @@ class Forecast
       throw new \Exception('Invalid longitude: '.$longitude);
     }
 
-    $timestamp = strtotime('midnight', $timestamp);
+    $latitude = $this->normalizeGeoCoordinate($latitude);
+    $longitude = $this->normalizeGeoCoordinate($longitude);
+
+    $timestamp = $this->normalizeTimestamp($timestamp);
 
     $cacheKey = md5($latitude.$longitude.$timestamp);
 
@@ -103,6 +106,14 @@ class Forecast
     $hour = intval(date('G', $timestamp));
 
     return $forecastForDay->getHour($hour);
+  }
+
+  private function normalizeGeoCoordinate($value) {
+    return round($value, 2);
+  }
+
+  private function normalizeTimestamp($value) {
+    return strtotime('midnight', $value);
   }
 
   private function isValidTimestamp($timestamp) {

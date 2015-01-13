@@ -30,4 +30,20 @@ class Location {
     $this->offset = $offset;
   }
 
+  public function getLatitude() {
+    return $this->latitude;
+  }
+
+  public function getLongitude() {
+    return $this->longitude;
+  }
+
+  public function getTimezone() {
+    return $this->timezone;
+  }
+
+  public function getOffset() {
+    return $this->offset;
+  }
+
 }

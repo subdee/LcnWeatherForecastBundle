@@ -5,6 +5,7 @@ namespace Lcn\WeatherForecastBundle\Tests\Controller;
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Cache\PhpFileCache;
 use Lcn\WeatherForecastBundle\Model\Day;
+use Lcn\WeatherForecastBundle\Model\Location;
 use Lcn\WeatherForecastBundle\Model\WeatherForecastForDay;
 use Lcn\WeatherForecastBundle\Model\WeatherForecastForHour;
 use Lcn\WeatherForecastBundle\Service\Forecast;
@@ -16,8 +17,8 @@ class ForecastTest extends \PHPUnit_Framework_TestCase
 {
 
     private $apiToken = '9f636811b51dded9de7e7ca811d325f7';
-    private $lat = 53.553521;
-    private $lng = 9.948773;
+    private $lat = 53.55;
+    private $lng = 9.95;
 
     private $timestamp = 1404165600;
     private $timestamp2 = 1421017200;
@@ -50,13 +51,12 @@ class ForecastTest extends \PHPUnit_Framework_TestCase
 
             global $lcnForecastProviderCallCount;
 
-            $lcnForecastProviderCallCount++;
-
             if ($timestamp == strtotime('today')) {
                 $timestamp = $todayTimestamp;
             }
-
-            echo $timestamp;
+            else {
+              $lcnForecastProviderCallCount++;
+            }
 
             $filename = __DIR__ . '/../fixtures/' . intval($timestamp) . '.json';
             if (file_exists($filename)) {
@@ -246,6 +246,23 @@ class ForecastTest extends \PHPUnit_Framework_TestCase
         $this->assertForecastForHour($forecastForHour);
         $this->assertEquals('Clear', $forecastForHour->getSummary());
         $this->assertEquals('clear-day', $forecastForHour->getIcon());
+    }
+
+
+    public function testNormalizeGeoCoordinates()
+    {
+      $forecastForDayPos1 = $this->forecast->getForToday($this->lat, $this->lng);
+      $forecastForDayPos2 = $this->forecast->getForToday($this->lat + 0.004, $this->lng - 0.004);
+
+      $location1 = $forecastForDayPos1->getLocation();
+      $location2 = $forecastForDayPos2->getLocation();
+
+      $this->assertTrue($location1 instanceof Location);
+      $this->assertTrue($location2 instanceof Location);
+      $this->assertEquals($location1->getLatitude(), $location2->getLatitude());
+      $this->assertEquals($location1->getLongitude(), $location2->getLongitude());
+      $this->assertEquals($location1->getTimezone(), $location2->getTimezone());
+      $this->assertEquals($location1->getOffset(), $location2->getOffset());
     }
 
     public function testForecastProviderCaching() {

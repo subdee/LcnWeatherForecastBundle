@@ -47,4 +47,11 @@ class WeatherForecastForDay extends BaseWeatherForecast {
     return $this->hours[$hour];
   }
 
+  /**
+   * @return Location
+   */
+  public function getLocation() {
+    return $this->location;
+  }
+
 }
