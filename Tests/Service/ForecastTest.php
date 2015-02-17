@@ -1,6 +1,6 @@
 <?php
 
-namespace Lcn\WeatherForecastBundle\Tests\Controller;
+namespace Lcn\WeatherForecastBundle\Tests\Service;
 
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Cache\PhpFileCache;

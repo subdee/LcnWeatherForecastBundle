@@ -121,10 +121,10 @@ class Forecast
   }
 
   private function isValidLatitude($latitude) {
-    return preg_match('/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/', $latitude);
+    return floatval($latitude) >= -90 && floatval($latitude) <= 90;
   }
 
   private function isValidLongitude($longitude) {
-    return preg_match('/^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/', $longitude);
+    return floatval($longitude) >= -180 && floatval($longitude) <= 180;
   }
 }

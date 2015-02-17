@@ -1,6 +1,8 @@
 LcnWeatherForecastBundle
 ========================
 
+Easy Forecast.io weather forecast Symfony 2 integration. MIT License.
+
 Installation
 ------------
 
