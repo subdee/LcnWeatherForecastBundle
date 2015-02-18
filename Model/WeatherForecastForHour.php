@@ -11,4 +11,8 @@ class WeatherForecastForHour extends BaseWeatherForecast {
     return $this->get('summary');
   }
 
+  public function getTemperature() {
+    return $this->get('temperature');
+  }
+
 }
