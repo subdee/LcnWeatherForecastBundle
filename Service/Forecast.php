@@ -103,7 +103,9 @@ class Forecast
   {
     $forecastForDay = $this->getForDay($latitude, $longitude, $timestamp);
 
-    $hour = intval(date('G', $timestamp));
+    $forecastTz = $forecastForDay->getLocation()->getTimezone();
+
+    $hour = \DateTime::createFromFormat('U', $timestamp)->setTimezone(new \DateTimeZone($forecastTz))->format('G');
 
     return $forecastForDay->getHour($hour);
   }
