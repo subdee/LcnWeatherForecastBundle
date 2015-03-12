@@ -105,7 +105,7 @@ class Forecast
 
     $forecastTz = $forecastForDay->getLocation()->getTimezone();
 
-    $hour = \DateTime::createFromFormat('U', $timestamp)->setTimezone(new \DateTimeZone($forecastTz))->format('G');
+    $hour = intval(\DateTime::createFromFormat('U', $timestamp)->setTimezone(new \DateTimeZone($forecastTz))->format('G'));
 
     return $forecastForDay->getHour($hour);
   }
@@ -123,10 +123,10 @@ class Forecast
   }
 
   private function isValidLatitude($latitude) {
-    return floatval($latitude) >= -90 && floatval($latitude) <= 90;
+    return is_numeric($latitude) && floatval($latitude) >= -90 && floatval($latitude) <= 90;
   }
 
   private function isValidLongitude($longitude) {
-    return floatval($longitude) >= -180 && floatval($longitude) <= 180;
+    return is_numeric($longitude) && floatval($longitude) >= -180 && floatval($longitude) <= 180;
   }
 }

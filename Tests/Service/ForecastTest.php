@@ -195,7 +195,7 @@ class ForecastTest extends \PHPUnit_Framework_TestCase
               'icon' => 'rain',
             ),
             16 => array(
-              'summary' => 'Drizzle and Windy',
+              'summary' => 'Drizzle and Breezy',
               'icon' => 'rain',
             ),
             17 => array(
