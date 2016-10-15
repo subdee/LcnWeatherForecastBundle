@@ -23,6 +23,24 @@ class WeatherForecastForDay extends BaseWeatherForecast {
     }
   }
 
+  public function getWindBearing() {
+    $hourly = $this->get('hourly');
+
+    return $hourly['windBearing'];
+  }
+
+  public function getWindSpeed() {
+    $hourly = $this->get('hourly');
+
+    return $hourly['windSpeed'];
+  }
+
+  public function getTemperature() {
+    $hourly = $this->get('hourly');
+
+    return $hourly['temperature'];
+  }
+
   public function getSummary() {
     $hourly = $this->get('hourly');
 
