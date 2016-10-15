@@ -2,18 +2,19 @@ parameters:
   lcn.weather_forecast.class: Lcn\WeatherForecastBundle\Service\Forecast
   lcn.weather_forecast_provider.forecast_io.class: Lcn\WeatherForecastBundle\Provider\ForecastIoProvider
   lcn.weather_forecast_provider.forecast_io.api_token: "define your token as parameter 'lcn.weather_forecast_provider.forecast_io.api_token' in 'app/config/parameters.yml'"
+  lcn.weather_forecast_provider.forecast_io.lang: "define your token as parameter 'lcn.weather_forecast_provider.forecast_io.lang' in 'app/config/parameters.yml'"
 
 services:
     lcn.weather_forecast:
-        class: %lcn.weather_forecast.class%
-        arguments: [@lcn.weather_forecast_provider.forecast_io, @lcn.weather_forecast.cache]
+        class: "%lcn.weather_forecast.class%"
+        arguments: ["@lcn.weather_forecast_provider.forecast_io", "@lcn.weather_forecast.cache"]
 
     lcn.weather_forecast.cache:
         class: Doctrine\Common\Cache\PhpFileCache
-        arguments: [%kernel.cache_dir%]
+        arguments: ["%kernel.cache_dir%"]
         calls:
             - [setNamespace, ['lcn_weather_forecast']]
 
     lcn.weather_forecast_provider.forecast_io:
-        class: %lcn.weather_forecast_provider.forecast_io.class%
-        arguments: [%lcn.weather_forecast_provider.forecast_io.api_token%]
+        class: "%lcn.weather_forecast_provider.forecast_io.class%"
+        arguments: ["%lcn.weather_forecast_provider.forecast_io.api_token%","%lcn.weather_forecast_provider.forecast_io.lang%"]

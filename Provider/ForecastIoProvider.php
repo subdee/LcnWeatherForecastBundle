@@ -8,12 +8,14 @@ class ForecastIoProvider implements ForecastProviderInterface
    * @var String   */
   private $apiToken;
 
+    private $lang;
+
   /**
    * Class constructor
    *
    * @param String $apiToken
    */
-  public function __construct($apiToken)
+  public function __construct($apiToken, $lang = 'en')
   {
 
     if (0 === strpos($apiToken, 'define your token')) {
@@ -21,6 +23,7 @@ class ForecastIoProvider implements ForecastProviderInterface
     }
 
     $this->apiToken = $apiToken;
+    $this->lang = $lang;
   }
 
   /**
@@ -30,13 +33,14 @@ class ForecastIoProvider implements ForecastProviderInterface
    */
   public function getForDay($latitude, $longitude, $timestamp) {
     $url = sprintf(
-      'https://api.forecast.io/forecast/{api-token}/%s,%s,%s?exclude=minutely,flags,alerts',
+      'https://api.forecast.io/forecast/{api-token}/%s,%s,%s?exclude=minutely,flags,alerts&lang={lang}',
       $latitude,
       $longitude,
       $timestamp
     );
 
     $url = str_replace('{api-token}', $this->apiToken, $url);
+    $url = str_replace('{lang}', $this->lang, $url);
 
     $rawResult = file_get_contents($url);
     if (!$rawResult) {
