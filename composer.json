@@ -1,5 +1,5 @@
 {
-  "name" : "locaine/lcn-weather-forecast-bundle",
+  "name" : "subdee/lcn-weather-forecast-bundle",
   "description" : "Integrate Weather Forecasts by Forecast.io into your Symfony 2 projects. With API request normalization and caching.",
   "type" : "symfony-bundle",
   "authors" : [{
