@@ -33,7 +33,7 @@ class ForecastIoProvider implements ForecastProviderInterface
    */
   public function getForDay($latitude, $longitude, $timestamp) {
     $url = sprintf(
-      'https://api.forecast.io/forecast/{api-token}/%s,%s,%s?exclude=minutely,flags,alerts&lang={lang}',
+      'https://api.forecast.io/forecast/{api-token}/%s,%s,%s?exclude=minutely,flags,alerts&lang={lang}&units=auto',
       $latitude,
       $longitude,
       $timestamp

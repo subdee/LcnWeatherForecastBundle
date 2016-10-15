@@ -24,19 +24,19 @@ class WeatherForecastForDay extends BaseWeatherForecast {
   }
 
   public function getWindBearing() {
-    $hourly = $this->get('hourly');
+    $hourly = $this->get('currently');
 
     return $hourly['windBearing'];
   }
 
   public function getWindSpeed() {
-    $hourly = $this->get('hourly');
+    $hourly = $this->get('currently');
 
     return $hourly['windSpeed'];
   }
 
   public function getTemperature() {
-    $hourly = $this->get('hourly');
+    $hourly = $this->get('currently');
 
     return $hourly['temperature'];
   }
